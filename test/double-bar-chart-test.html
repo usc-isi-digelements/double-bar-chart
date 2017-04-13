@@ -1,0 +1,252 @@
+<!--
+Copyright 2017 Next Century Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../double-bar-chart.html">
+</head>
+
+<body>
+  <test-fixture id="double-bar-chart-fixture">
+    <template>
+      <double-bar-chart></double-bar-chart>
+    </template>
+  </test-fixture>
+
+  <script>
+    /* globals suite, setup, fixture, expect, test, flush */
+    /* jshint -W030 */
+    'use strict';
+
+    suite('double-bar-chart tests', function() {
+      var element;
+
+      setup(function(done) {
+        element = fixture('double-bar-chart-fixture');
+        element.data = [{
+          count: 6,
+          icon: 'myIcon1',
+          link: 'myLink1',
+          id: 1,
+          max: 6,
+          styleClass: 'myStyleClass1',
+          text: 'myText1'
+        }, {
+          count: 5,
+          icon: 'myIcon2',
+          link: 'myLink2',
+          id: 2,
+          max: 6,
+          styleClass: 'myStyleClass2',
+          text: 'myText2'
+        }];
+        element.showCheckboxes = true;
+        element.indexName = 'myIndexName';
+        element.indexTypes = ['myIndexType'];
+        element.queryField = 'myQueryField';
+        flush(done);
+      });
+
+      test('input properties are set correctly', function() {
+        expect(element.data).to.deep.equal([{
+          count: 6,
+          icon: 'myIcon1',
+          link: 'myLink1',
+          id: 1,
+          max: 6,
+          styleClass: 'myStyleClass1',
+          text: 'myText1'
+        }, {
+          count: 5,
+          icon: 'myIcon2',
+          link: 'myLink2',
+          id: 2,
+          max: 6,
+          styleClass: 'myStyleClass2',
+          text: 'myText2'
+        }]);
+        expect(element.showCheckboxes).to.be.true;
+      });
+
+      test('default properties are set correctly', function() {
+        expect(element.countProperty).to.equal('count');
+        expect(element.iconProperty).to.equal('icon');
+        expect(element.idProperty).to.equal('id');
+        expect(element.linkProperty).to.equal('link');
+        expect(element.maxProperty).to.equal('max');
+        expect(element.styleClassProperty).to.equal('styleClass');
+        expect(element.textProperty).to.equal('text');
+        expect(element.checkboxName).to.equal('Filter');
+        expect(element.selectedIds).to.deep.equal([]);
+        expect(element.maxOtherCount).to.equal(0);
+      });
+
+      test('does show two double-bar elements', function() {
+        var bars = document.querySelectorAll('double-bar');
+        expect(bars.length).to.equal(2);
+
+        expect(bars[0].count).to.equal(6);
+        expect(bars[0].icon).to.equal('myIcon1');
+        expect(bars[0].link).to.equal('myLink1');
+        expect(bars[0].max).to.equal(6);
+        expect(bars[0].styleClass).to.equal('myStyleClass1');
+        expect(bars[0].text).to.equal('myText1');
+        expect(bars[0].showCheckbox).to.be.true;
+        expect(bars[0].checkboxTooltip).to.be.a('String');
+        expect(bars[0].toggleListener).to.exist;
+        expect(bars[0].selected).to.be.false;
+        expect(bars[0].indexName).to.equal('myIndexName');
+        expect(bars[0].indexTypes).to.deep.equal(['myIndexType']);
+        expect(bars[0].queryId).to.equal(1);
+        expect(bars[0].queryField).to.equal('myQueryField');
+        expect(bars[0].maxOtherCount).to.equal(0);
+        expect(bars[0].client).to.not.exist;
+
+        expect(bars[1].count).to.equal(5);
+        expect(bars[1].icon).to.equal('myIcon2');
+        expect(bars[1].link).to.equal('myLink2');
+        expect(bars[1].max).to.equal(6);
+        expect(bars[1].styleClass).to.equal('myStyleClass2');
+        expect(bars[1].text).to.equal('myText2');
+        expect(bars[1].showCheckbox).to.be.true;
+        expect(bars[1].checkboxTooltip).to.be.a('String');
+        expect(bars[1].toggleListener).to.exist;
+        expect(bars[1].selected).to.be.false;
+        expect(bars[1].indexName).to.equal('myIndexName');
+        expect(bars[1].indexTypes).to.deep.equal(['myIndexType']);
+        expect(bars[1].queryId).to.equal(2);
+        expect(bars[1].queryField).to.equal('myQueryField');
+        expect(bars[1].maxOtherCount).to.equal(0);
+        expect(bars[1].client).to.not.exist;
+      });
+
+      test('_templateData is set correctly', function() {
+        expect(element._templateData).to.be.an('Array');
+        expect(element._templateData).to.deep.equal([{
+          item: {
+            count: 6,
+            icon: 'myIcon1',
+            link: 'myLink1',
+            id: 1,
+            max: 6,
+            styleClass: 'myStyleClass1',
+            text: 'myText1'
+          },
+          selected: false
+        }, {
+          item: {
+            count: 5,
+            icon: 'myIcon2',
+            link: 'myLink2',
+            id: 2,
+            max: 6,
+            styleClass: 'myStyleClass2',
+            text: 'myText2'
+          },
+          selected: false
+        }]);
+      });
+
+      test('objects in _templateData are the objects in data', function() {
+        expect(element._templateData[0].item).to.equal(element.data[0]);
+        expect(element._templateData[1].item).to.equal(element.data[1]);
+      });
+
+      test('changing data does change _templateData', function() {
+        element.data = [{
+          count: 4,
+          icon: 'myIcon3',
+          link: 'myLink3',
+          id: 3,
+          max: 6,
+          styleClass: 'myStyleClass3',
+          text: 'myText3'
+        }];
+
+        expect(element._templateData).to.deep.equal([{
+          item: {
+            count: 4,
+            icon: 'myIcon3',
+            link: 'myLink3',
+            id: 3,
+            max: 6,
+            styleClass: 'myStyleClass3',
+            text: 'myText3'
+          },
+          selected: false
+        }]);
+      });
+
+      test('_getCheckboxTooltip does return correctly', function() {
+        expect(element._getCheckboxTooltip).to.be.a('Function');
+        var item = {
+          number: 1,
+          string: 'string'
+        };
+        expect(element._getCheckboxTooltip(item, 'number', 'foo')).to.equal('Toggle foo on 1');
+        expect(element._getCheckboxTooltip(item, 'string', 'bar')).to.equal('Toggle bar on string');
+      });
+
+      test('_getProperty does return correctly', function() {
+        expect(element._getProperty).to.be.a('Function');
+        var item = {
+          number: 1,
+          string: 'string'
+        };
+        expect(element._getProperty(item, 'number')).to.equal(1);
+        expect(element._getProperty(item, 'string')).to.equal('string');
+      });
+
+      test('_createToggleListener() does return an object', function() {
+        expect(element._createToggleListener).to.be.a('Function');
+        var listener = element._createToggleListener();
+        expect(listener).to.be.an('Object');
+        expect(listener.onToggle).to.be.a('Function');
+      });
+
+      test('_createToggleListener().onToggle() does nothing if no item is selected', function(done) {
+        element._createToggleListener().onToggle();
+        flush(function() {
+          expect(element.selectedIds).to.deep.equal([]);
+          done();
+        });
+      });
+
+      test('_createToggleListener().onToggle() does add to selectedIds', function(done) {
+        element._templateData[1].selected = true;
+        element._createToggleListener().onToggle();
+        flush(function() {
+          expect(element.selectedIds).to.deep.equal([2]);
+          done();
+        });
+      });
+
+      test('_createToggleListener().onToggle() does remove from selectedIds', function(done) {
+        element.selectedIds = [2];
+        element._createToggleListener().onToggle();
+        flush(function() {
+          expect(element.selectedIds).to.deep.equal([]);
+          done();
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!--
+Copyright 2017 Next Century Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../double-bar/double-bar.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+
+<!--
+A Polymer Element showing a bar chart of double-bar elements with optional selectable behavior.
+
+### Example
+```html
+<double-bar-chart
+  client="[[client]]"
+  index-name="myIndexName"
+  index-types='["myIndexType"]'
+  query-field="myQueryField"
+  show-checkboxes
+  data="[[data]]"
+  selected-ids="{{selected}}">
+</double-bar-chart>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="double-bar-chart">
+  <template>
+    <style include="iron-flex"></style>
+
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <template is="dom-repeat" items="[[_templateData]]" as="object">
+      <div class="flex">
+        <double-bar
+          client="[[client]]"
+          index-name="[[indexName]]"
+          index-types="[[indexTypes]]"
+          query-id="[[_getProperty(object.item, idProperty)]]"
+          query-field="[[queryField]]"
+          count="[[_getProperty(object.item, countProperty)]]"
+          icon="[[_getProperty(object.item, iconProperty)]]"
+          link="[[_getProperty(object.item, linkProperty)]]"
+          max="[[_getProperty(object.item, maxProperty)]]"
+          style-class="[[_getProperty(object.item, styleClassProperty)]]"
+          text="[[_getProperty(object.item, textProperty)]]"
+          show-checkbox="[[showCheckboxes]]"
+          checkbox-tooltip="[[_getCheckboxTooltip(object.item, textProperty, checkboxName)]]"
+          toggle-listener="[[_createToggleListener()]]"
+          max-other-count="{{maxOtherCount}}"
+          selected="{{object.selected}}">
+        </double-bar>
+      </div>
+    </template>
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'double-bar-chart',
+
+      properties: {
+        /**
+         * (Required)
+         *
+         * The data.
+         *
+         * @type {Array}
+         */
+        data: {
+          type: Array
+        },
+
+        /**
+         * (Optional)
+         *
+         * The count property in the data.
+         *
+         * @type {String}
+         * @default 'count'
+         */
+        countProperty: {
+          type: String,
+          value: 'count'
+        },
+
+        /**
+         * (Optional)
+         *
+         * The icon property in the each item.
+         *
+         * @type {String}
+         * @default 'icon'
+         */
+        iconProperty: {
+          type: String,
+          value: 'icon'
+        },
+
+        /**
+         * (Optional)
+         *
+         * The ID property in the each item.
+         *
+         * @type {String}
+         * @default 'id'
+         */
+        idProperty: {
+          type: String,
+          value: 'id'
+        },
+
+        /**
+         * (Optional)
+         *
+         * The link property in the each item.
+         *
+         * @type {String}
+         * @default 'link'
+         */
+        linkProperty: {
+          type: String,
+          value: 'link'
+        },
+
+        /**
+         * (Optional)
+         *
+         * The max property in the each item.
+         *
+         * @type {String}
+         * @default 'max'
+         */
+        maxProperty: {
+          type: String,
+          value: 'max'
+        },
+
+        /**
+         * (Optional)
+         *
+         * The style class property in the each item.
+         *
+         * @type {String}
+         * @default 'styleClass'
+         */
+        styleClassProperty: {
+          type: String,
+          value: 'styleClass'
+        },
+
+        /**
+         * (Optional)
+         *
+         * The text property in the each item.
+         *
+         * @type {String}
+         * @default 'text'
+         */
+        textProperty: {
+          type: String,
+          value: 'text'
+        },
+
+        /**
+         * (Required)
+         *
+         * The elasticsearch client.
+         *
+         * @type {Object}
+         */
+        client: {
+          type: Object
+        },
+
+        /**
+         * (Required)
+         *
+         * The elasticsearch index name.
+         *
+         * @type {String}
+         */
+        indexName: {
+          type: String
+        },
+
+        /**
+         * (Required)
+         *
+         * The list of elasticsearch index type strings.
+         *
+         * @type {Array}
+         */
+        indexTypes: {
+          type: Array
+        },
+
+        /**
+         * (Required)
+         *
+         * The query field.
+         *
+         * @type {String}
+         */
+        queryField: {
+          type: String
+        },
+
+        /**
+         * (Optional)
+         *
+         * Whether or not to display a checkbox in each double-bar.
+         *
+         * @type {Boolean}
+         * @default false
+         */
+        showCheckboxes: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * (Optional)
+         *
+         * The name of the checkboxes.
+         *
+         * @type {String}
+         * @default 'Filter'
+         */
+        checkboxName: {
+          type: String,
+          value: 'Filter'
+        },
+
+        /**
+         * (Optional|Output)
+         *
+         * The maximum 'other count' value.
+         *
+         * @type {Number}
+         * @default 0
+         */
+        maxOtherCount: {
+          notify: true,
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * (Output)
+         *
+         * The string IDs of items in the data that have been selected.
+         *
+         * @type {Array}
+         * @default []
+         */
+        selectedIds: {
+          notify: true,
+          type: Array,
+          value: function() {
+            return [];
+          }
+        },
+
+        /**
+         * The list of data objects to use in the dom-repeat template that each have an item from the input data and the selected status.
+         *
+         * @type {Array}
+         * @private
+         */
+        _templateData: {
+          computed: '_computeTemplateData(data)',
+          type: Array
+        }
+      },
+
+      /**
+       * Returns the list of data objects to use in the dom-repeat template that each have an item from the input data and the selected status.
+       *
+       * @param {Array} data
+       * @return {Array}
+       * @private
+       */
+      _computeTemplateData: function(data) {
+        return data.map(function(item) {
+          return {
+            item: item,
+            selected: false
+          };
+        });
+      },
+
+      /**
+       * Returns a listener on toggling a double-bar checkbox that updates the list of selected IDs using the selected objects in the _templateData.
+       *
+       * @return {Function}
+       * @private
+       */
+      _createToggleListener: function() {
+        var self = this;
+
+        return {
+          onToggle: function() {
+            var update = false;
+            var updateSelectedIds = [];
+
+            self._templateData.forEach(function(object) {
+              var index = self.selectedIds.indexOf(object.item[self.idProperty]);
+              if(object.selected) {
+                update = update || (index < 0);
+                updateSelectedIds.push(object.item[self.idProperty]);
+              } else if(index >= 0) {
+                update = true;
+              }
+            });
+
+            if(update) {
+              self.set('selectedIds', updateSelectedIds);
+            }
+          }
+        };
+      },
+
+      /**
+       * Returns the checkbox tooltip.
+       *
+       * @param {Object} item
+       * @param {String} textProperty
+       * @param {String} checkboxName
+       * @return {String}
+       * @private
+       */
+      _getCheckboxTooltip: function(item, textProperty, checkboxName) {
+        return 'Toggle ' + checkboxName + ' on ' + item[textProperty];
+      },
+
+      /**
+       * Returns the value of the given item.
+       *
+       * @param {Object} item
+       * @param {String} property
+       * @return {Any}
+       * @private
+       */
+      _getProperty: function(item, property) {
+        return item[property];
+      },
+    });
+  })();
+  </script>
+</dom-module>
