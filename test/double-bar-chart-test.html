@@ -91,11 +91,13 @@ limitations under the License.
         expect(element.idProperty).to.equal('id');
         expect(element.linkProperty).to.equal('link');
         expect(element.maxProperty).to.equal('max');
+        expect(element.selectProperty).to.equal('select');
         expect(element.styleClassProperty).to.equal('styleClass');
         expect(element.textProperty).to.equal('text');
         expect(element.checkboxName).to.equal('Filter');
         expect(element.selectedIds).to.deep.equal([]);
         expect(element.maxOtherCount).to.equal(0);
+        expect(element.client).to.not.exist;
       });
 
       test('does show two double-bar elements', function() {
@@ -171,6 +173,51 @@ limitations under the License.
 
       test('changing data does change _templateData', function() {
         element.data = [{
+          count: 6,
+          icon: 'myIcon1',
+          link: 'myLink1',
+          id: 1,
+          max: 6,
+          styleClass: 'myStyleClass1',
+          text: 'myText1'
+        }, {
+          count: 4,
+          icon: 'myIcon3',
+          link: 'myLink3',
+          id: 3,
+          max: 6,
+          styleClass: 'myStyleClass3',
+          text: 'myText3'
+        }];
+
+        expect(element._templateData).to.deep.equal([{
+          item: {
+            count: 6,
+            icon: 'myIcon1',
+            link: 'myLink1',
+            id: 1,
+            max: 6,
+            styleClass: 'myStyleClass1',
+            text: 'myText1'
+          },
+          selected: false
+        }, {
+          item: {
+            count: 4,
+            icon: 'myIcon3',
+            link: 'myLink3',
+            id: 3,
+            max: 6,
+            styleClass: 'myStyleClass3',
+            text: 'myText3'
+          },
+          selected: false
+        }]);
+      });
+
+      test('changing data does not change selectedIds', function() {
+        element.selectedIds = [1, 2];
+        element.data = [{
           count: 4,
           icon: 'myIcon3',
           link: 'myLink3',
@@ -191,6 +238,35 @@ limitations under the License.
             text: 'myText3'
           },
           selected: false
+        }]);
+        expect(element.selectedIds).to.deep.equal([1, 2]);
+      });
+
+      test('_templateData does use select property in data', function() {
+        element.data = [{
+          count: 6,
+          icon: 'myIcon1',
+          link: 'myLink1',
+          id: 1,
+          max: 6,
+          select: true,
+          styleClass: 'myStyleClass1',
+          text: 'myText1'
+        }];
+
+        expect(element._templateData[0].selected).to.be.true;
+        expect(element._templateData).to.deep.equal([{
+          item: {
+            count: 6,
+            icon: 'myIcon1',
+            link: 'myLink1',
+            id: 1,
+            max: 6,
+            select: true,
+            styleClass: 'myStyleClass1',
+            text: 'myText1'
+          },
+          selected: true
         }]);
       });
 
