@@ -55,6 +55,7 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
           index-types="[[indexTypes]]"
           query-id="[[_getProperty(object.item, idProperty)]]"
           query-field="[[queryField]]"
+          query="[[query]]"
           count="[[_getProperty(object.item, countProperty)]]"
           icon="[[_getProperty(object.item, iconProperty)]]"
           link="[[_getProperty(object.item, linkProperty)]]"
@@ -228,9 +229,20 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
         },
 
         /**
+         * (Optional)
+         *
+         * The elasticsearch query object.  Can be set instead of `queryField`.
+         *
+         * @type {Object}
+         */
+        query: {
+          type: Object
+        },
+
+        /**
          * (Required)
          *
-         * The query field.
+         * The query field.  Not required if `query` is set.
          *
          * @type {String}
          */
