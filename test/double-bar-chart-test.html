@@ -94,6 +94,7 @@ limitations under the License.
         expect(element.selectProperty).to.equal('select');
         expect(element.styleClassProperty).to.equal('styleClass');
         expect(element.textProperty).to.equal('text');
+        expect(element.target).to.equal('_self');
         expect(element.checkboxName).to.equal('Filter');
         expect(element.selectedIds).to.deep.equal([]);
         expect(element.maxOtherCount).to.equal(0);
@@ -110,6 +111,7 @@ limitations under the License.
         expect(bars[0].max).to.equal(6);
         expect(bars[0].styleClass).to.equal('myStyleClass1');
         expect(bars[0].text).to.equal('myText1');
+        expect(bars[0].target).to.equal('_self');
         expect(bars[0].showCheckbox).to.be.true;
         expect(bars[0].checkboxTooltip).to.be.a('String');
         expect(bars[0].toggleListener).to.exist;
@@ -127,6 +129,7 @@ limitations under the License.
         expect(bars[1].max).to.equal(6);
         expect(bars[1].styleClass).to.equal('myStyleClass2');
         expect(bars[1].text).to.equal('myText2');
+        expect(bars[1].target).to.equal('_self');
         expect(bars[1].showCheckbox).to.be.true;
         expect(bars[1].checkboxTooltip).to.be.a('String');
         expect(bars[1].toggleListener).to.exist;

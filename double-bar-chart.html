@@ -62,6 +62,7 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
           max="[[_getProperty(object.item, maxProperty)]]"
           style-class="[[_getProperty(object.item, styleClassProperty)]]"
           text="[[_getProperty(object.item, textProperty)]]"
+          target="[[target]]"
           show-checkbox="[[showCheckboxes]]"
           checkbox-tooltip="[[_getCheckboxTooltip(object.item, textProperty, checkboxName)]]"
           toggle-listener="[[_createToggleListener()]]"
@@ -193,6 +194,19 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
         textProperty: {
           type: String,
           value: 'text'
+        },
+
+        /**
+         * (Optional)
+         *
+         * The target page of the links.
+         *
+         * @type {String}
+         * @default '_self'
+         */
+        target: {
+          type: String,
+          value: '_self'
         },
 
         /**
