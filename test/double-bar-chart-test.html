@@ -293,6 +293,22 @@ limitations under the License.
         expect(element._getProperty(item, 'string')).to.equal('string');
       });
 
+      test('adding to selectedIds does update _templateData', function() {
+        element.selectedIds = [2];
+        expect(element._templateData[0].selected).to.be.false;
+        expect(element._templateData[1].selected).to.be.true;
+      });
+
+      test('removing from selectedIds does update _templateData', function() {
+        element.selectedIds = [1, 2];
+        expect(element._templateData[0].selected).to.be.true;
+        expect(element._templateData[1].selected).to.be.true;
+
+        element.selectedIds = [2];
+        expect(element._templateData[0].selected).to.be.false;
+        expect(element._templateData[1].selected).to.be.true;
+      });
+
       test('_createToggleListener() does return an object', function() {
         expect(element._createToggleListener).to.be.a('Function');
         var listener = element._createToggleListener();
@@ -319,6 +335,7 @@ limitations under the License.
 
       test('_createToggleListener().onToggle() does remove from selectedIds', function(done) {
         element.selectedIds = [2];
+        element._templateData[1].selected = false;
         element._createToggleListener().onToggle();
         flush(function() {
           expect(element.selectedIds).to.deep.equal([]);

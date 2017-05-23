@@ -314,6 +314,7 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
          */
         selectedIds: {
           notify: true,
+          observer: '_updateSelectedData',
           type: Array,
           value: function() {
             return [];
@@ -405,6 +406,23 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
       _getProperty: function(item, property) {
         return item[property];
       },
+
+      /**
+       * Updates the objects in the _templateData using the list of selected IDs.
+       *
+       * @private
+       */
+      _updateSelectedData: function() {
+        var self = this;
+        (self._templateData || []).forEach(function(object, dataIndex) {
+          var selectedIndex = self.selectedIds.indexOf(object.item[self.idProperty]);
+          if(object.selected && selectedIndex < 0) {
+            self.set('_templateData.' + dataIndex + '.selected', false);
+          } else if(!object.selected && selectedIndex >= 0) {
+            self.set('_templateData.' + dataIndex + '.selected', true);
+          }
+        });
+      }
     });
   })();
   </script>
