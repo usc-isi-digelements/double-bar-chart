@@ -65,7 +65,7 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
           target="[[target]]"
           show-checkbox="[[showCheckboxes]]"
           checkbox-tooltip="[[_getCheckboxTooltip(object.item, textProperty, checkboxName)]]"
-          toggle-listener="[[_createToggleListener()]]"
+          toggle-listener="[[_createToggleListener(object)]]"
           max-other-count="{{maxOtherCount}}"
           selected="{{object.selected}}">
         </double-bar>
@@ -354,31 +354,31 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
       },
 
       /**
-       * Returns a listener on toggling a double-bar checkbox that updates the list of selected IDs using the selected objects in the _templateData.
+       * Returns a listener on toggling a double-bar checkbox that updates the list of selected IDs with the selected status of the given object from _templateData.
        *
+       * @param {Object} object
        * @return {Function}
        * @private
        */
-      _createToggleListener: function() {
+      _createToggleListener: function(object) {
         var self = this;
 
         return {
           onToggle: function() {
-            var update = false;
-            var updateSelectedIds = [];
-
-            self._templateData.forEach(function(object) {
-              var index = self.selectedIds.indexOf(object.item[self.idProperty]);
-              if(object.selected) {
-                update = update || (index < 0);
-                updateSelectedIds.push(object.item[self.idProperty]);
-              } else if(index >= 0) {
-                update = true;
-              }
+            // Create a copy of the selected ID list.
+            var selectedIds = self.selectedIds.map(function(id) {
+              return id;
             });
 
-            if(update) {
-              self.set('selectedIds', updateSelectedIds);
+            var selectedIndex = selectedIds.indexOf(object.item[self.idProperty]);
+
+            // Use self.set rather than self.push or self.splice to trigger observers correctly.
+            if(object.selected && selectedIndex < 0) {
+              selectedIds.push(object.item[self.idProperty]);
+              self.set('selectedIds', selectedIds);
+            } else if(!object.selected && selectedIndex >= 0) {
+              selectedIds.splice(selectedIndex, 1);
+              self.set('selectedIds', selectedIds);
             }
           }
         };

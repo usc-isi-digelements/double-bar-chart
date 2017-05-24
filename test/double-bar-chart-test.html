@@ -328,36 +328,68 @@ limitations under the License.
         expect(element._templateData[1].selected).to.be.true;
       });
 
-      test('_createToggleListener() does return an object', function() {
+      test('_createToggleListener does return an object', function() {
         expect(element._createToggleListener).to.be.a('Function');
-        var listener = element._createToggleListener();
+        var listener = element._createToggleListener(element._templateData[1]);
         expect(listener).to.be.an('Object');
         expect(listener.onToggle).to.be.a('Function');
       });
 
-      test('_createToggleListener().onToggle() does nothing if no item is selected', function(done) {
-        element._createToggleListener().onToggle();
+      test('_createToggleListener.onToggle() does nothing if no item is selected', function(done) {
+        element._createToggleListener(element._templateData[1]).onToggle();
         flush(function() {
           expect(element.selectedIds).to.deep.equal([]);
           done();
         });
       });
 
-      test('_createToggleListener().onToggle() does add to selectedIds', function(done) {
+      test('_createToggleListener.onToggle() does add to selectedIds', function(done) {
         element._templateData[1].selected = true;
-        element._createToggleListener().onToggle();
+        element._createToggleListener(element._templateData[1]).onToggle();
         flush(function() {
           expect(element.selectedIds).to.deep.equal([2]);
+          expect(element._templateData[0].selected).to.be.false;
+          expect(element._templateData[1].selected).to.be.true;
           done();
         });
       });
 
-      test('_createToggleListener().onToggle() does remove from selectedIds', function(done) {
+      test('_createToggleListener.onToggle() does remove from selectedIds', function(done) {
         element.selectedIds = [2];
+        // Reset selected to false.
         element._templateData[1].selected = false;
-        element._createToggleListener().onToggle();
+        element._createToggleListener(element._templateData[1]).onToggle();
         flush(function() {
           expect(element.selectedIds).to.deep.equal([]);
+          expect(element._templateData[0].selected).to.be.false;
+          expect(element._templateData[1].selected).to.be.false;
+          done();
+        });
+      });
+
+      test('_createToggleListener.onToggle() only toggles its own object', function(done) {
+        element.selectedIds = [1, 2];
+        // Reset selected to false.
+        element._templateData[0].selected = false;
+        element._templateData[1].selected = false;
+        element._createToggleListener(element._templateData[1]).onToggle();
+        flush(function() {
+          expect(element.selectedIds).to.deep.equal([1]);
+          expect(element._templateData[0].selected).to.be.true;
+          expect(element._templateData[1].selected).to.be.false;
+          done();
+        });
+      });
+
+      test('_createToggleListener.onToggle() does not remove IDs from selectedIds that are not in the data', function(done) {
+        element.selectedIds = [2, 3];
+        // Reset selected to false.
+        element._templateData[1].selected = false;
+        element._createToggleListener(element._templateData[1]).onToggle();
+        flush(function() {
+          expect(element.selectedIds).to.deep.equal([3]);
+          expect(element._templateData[0].selected).to.be.false;
+          expect(element._templateData[1].selected).to.be.false;
           done();
         });
       });
