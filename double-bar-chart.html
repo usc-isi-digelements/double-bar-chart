@@ -328,7 +328,7 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
          * @private
          */
         _templateData: {
-          computed: '_computeTemplateData(data, selectProperty)',
+          computed: '_computeTemplateData(data, idProperty, selectProperty)',
           type: Array
         }
       },
@@ -337,16 +337,18 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
        * Returns the list of data objects to use in the dom-repeat template that each have an item from the input data and the selected status.
        *
        * @param {Array} data
+       * @param {String} idProperty
        * @param {String} selectProperty
        * @return {Array}
        * @private
        */
-      _computeTemplateData: function(data, selectProperty) {
+      _computeTemplateData: function(data, idProperty, selectProperty) {
+        var self = this;
         return data.map(function(item) {
           return {
             item: item,
             // Ensure that the selected property is set to a boolean because the paper-checkbox may look strange if it is left undefined.
-            selected: item[selectProperty] || false
+            selected: item[selectProperty] || (self.selectedIds.indexOf(item[idProperty]) >= 0) || false
           };
         });
       },
