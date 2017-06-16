@@ -305,20 +305,32 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
         },
 
         /**
-         * (Output)
+         * (Optional|Output)
          *
-         * The string IDs of items in the data that have been selected.
+         * The string IDs of items in the data that have been selected.  Either a list of an object containing a list at its `selectedIdsProperty` property.
          *
-         * @type {Array}
+         * @type {Array|Object}
          * @default []
          */
         selectedIds: {
           notify: true,
           observer: '_updateSelectedData',
-          type: Array,
+          type: Object,
           value: function() {
             return [];
           }
+        },
+
+        /**
+         * (Optional)
+         *
+         * The property in the `selectedIds` object containing the list of selected string IDs.  Assumes that `selectedIds` itself is a list if undefined.
+         *
+         * @type {String}
+         */
+        selectedIdsProperty: {
+          observer: '_updateSelectedData',
+          type: String
         },
 
         /**
@@ -333,6 +345,11 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
         }
       },
 
+      observers: [
+        // Observe sub-property changes if selectedIds is an object.
+        '_updateSelectedData(selectedIds.*)'
+      ],
+
       /**
        * Returns the list of data objects to use in the dom-repeat template that each have an item from the input data and the selected status.
        *
@@ -343,12 +360,15 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
        * @private
        */
       _computeTemplateData: function(data, idProperty, selectProperty) {
-        var self = this;
+        var selectedIds = this.selectedIds || [];
+        if(this.selectedIds && this.selectedIdsProperty) {
+          selectedIds = this.selectedIds[this.selectedIdsProperty] || [];
+        }
         return data.map(function(item) {
           return {
             item: item,
             // Ensure that the selected property is set to a boolean because the paper-checkbox may look strange if it is left undefined.
-            selected: item[selectProperty] || (self.selectedIds.indexOf(item[idProperty]) >= 0) || false
+            selected: item[selectProperty] || (selectedIds.indexOf(item[idProperty]) >= 0) || false
           };
         });
       },
@@ -365,20 +385,27 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
 
         return {
           onToggle: function() {
+            var selectedIds = self.selectedIds || [];
+            var selectedIdsPath = 'selectedIds';
+            if(self.selectedIds && self.selectedIdsProperty) {
+              selectedIds = self.selectedIds[self.selectedIdsProperty] || [];
+              selectedIdsPath = ['selectedIds', self.selectedIdsProperty];
+            }
+
             // Create a copy of the selected ID list.
-            var selectedIds = self.selectedIds.map(function(id) {
+            var selectedIdsList = selectedIds.map(function(id) {
               return id;
             });
 
-            var selectedIndex = selectedIds.indexOf(object.item[self.idProperty]);
+            var selectedIndex = selectedIdsList.indexOf(object.item[self.idProperty]);
 
             // Use self.set rather than self.push or self.splice to trigger observers correctly.
             if(object.selected && selectedIndex < 0) {
-              selectedIds.push(object.item[self.idProperty]);
-              self.set('selectedIds', selectedIds);
+              selectedIdsList.push(object.item[self.idProperty]);
+              self.set(selectedIdsPath, selectedIdsList);
             } else if(!object.selected && selectedIndex >= 0) {
-              selectedIds.splice(selectedIndex, 1);
-              self.set('selectedIds', selectedIds);
+              selectedIdsList.splice(selectedIndex, 1);
+              self.set(selectedIdsPath, selectedIdsList);
             }
           }
         };
@@ -415,9 +442,17 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
        * @private
        */
       _updateSelectedData: function() {
+        var selectedIds = this.selectedIds || [];
+        if(this.selectedIds && this.selectedIdsProperty) {
+          selectedIds = this.selectedIds[this.selectedIdsProperty] || [];
+          if(Array.isArray(this.selectedIds)) {
+            this.selectedIds = {};
+          }
+        }
+
         var self = this;
         (self._templateData || []).forEach(function(object, dataIndex) {
-          var selectedIndex = self.selectedIds.indexOf(object.item[self.idProperty]);
+          var selectedIndex = selectedIds.indexOf(object.item[self.idProperty]);
           if(object.selected && selectedIndex < 0) {
             self.set('_templateData.' + dataIndex + '.selected', false);
           } else if(!object.selected && selectedIndex >= 0) {
