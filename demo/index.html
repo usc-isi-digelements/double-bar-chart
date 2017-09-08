@@ -18,64 +18,66 @@ limitations under the License.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
   <link rel="import" href="../double-bar-chart.html">
 </head>
 
 <body unresolved>
-  <template is="dom-bind" id="demo">
-    <p>Show Checkboxes: true</p>
-    <p>Data: [[stringData]]</p>
-    <p>Selected Ids:  [[selected]]</p>
+  <dom-bind>
+    <script>
+      (function(document) {
+        var domBind = document.querySelector('dom-bind');
+        domBind.data = [{
+          count: 10,
+          icon: 'icons:polymer',
+          id: 1,
+          link: 'http://nextcentury.com',
+          max: 10,
+          text: 'Bar 1'
+        }, {
+          count: 5,
+          icon: 'icons:polymer',
+          id: 2,
+          link: 'http://nextcentury.com',
+          max: 10,
+          text: 'Bar 2'
+        }, {
+          count: 2,
+          icon: 'icons:polymer',
+          id: 3,
+          link: 'http://nextcentury.com',
+          max: 10,
+          text: 'Bar 3'
+        }, {
+          count: 1,
+          icon: 'icons:polymer',
+          id: 4,
+          link: 'http://nextcentury.com',
+          max: 10,
+          text: 'Bar 4'
+        }, {
+          count: 0,
+          icon: 'icons:polymer',
+          id: 5,
+          link: 'http://nextcentury.com',
+          max: 10,
+          text: 'Bar 5'
+        }];
+        domBind.stringData = JSON.stringify(domBind.data);
+      })(document);
+    </script>
 
-    <double-bar-chart
-      show-checkboxes
-      data="[[data]]"
-      selected-ids="{{selected}}">
-    </double-bar-chart>
-  </template>
+    <template is="dom-bind" id="demo">
+      <p>Show Checkboxes: true</p>
+      <p>Data: [[stringData]]</p>
+      <p>Selected Ids:  [[selected]]</p>
 
-  <script>
-    (function(document) {
-      var demo = document.querySelector('#demo');
-      demo.data = [{
-        count: 10,
-        icon: 'icons:polymer',
-        id: 1,
-        link: 'http://nextcentury.com',
-        max: 10,
-        text: 'Bar 1'
-      }, {
-        count: 5,
-        icon: 'icons:polymer',
-        id: 2,
-        link: 'http://nextcentury.com',
-        max: 10,
-        text: 'Bar 2'
-      }, {
-        count: 2,
-        icon: 'icons:polymer',
-        id: 3,
-        link: 'http://nextcentury.com',
-        max: 10,
-        text: 'Bar 3'
-      }, {
-        count: 1,
-        icon: 'icons:polymer',
-        id: 4,
-        link: 'http://nextcentury.com',
-        max: 10,
-        text: 'Bar 4'
-      }, {
-        count: 0,
-        icon: 'icons:polymer',
-        id: 5,
-        link: 'http://nextcentury.com',
-        max: 10,
-        text: 'Bar 5'
-      }];
-      demo.stringData = JSON.stringify(demo.data);
-    })(document);
-  </script>
+      <double-bar-chart
+        show-checkboxes
+        data="[[data]]"
+        selected-ids="{{selected}}">
+      </double-bar-chart>
+    </template>
+  </dom-bind>
 </body>
 </html>
