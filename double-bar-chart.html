@@ -361,7 +361,7 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
        */
       _computeTemplateData: function(data, idProperty, selectProperty) {
         if(!data || !idProperty || !selectProperty) {
-          return;
+          return undefined;
         }
 
         var selectedIds = this.selectedIds || [];
@@ -386,8 +386,9 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
        */
       _createToggleListener: function(object) {
         if(!object) {
-          return
+          return undefined;
         }
+
         var self = this;
 
         return {
@@ -428,10 +429,7 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
        * @private
        */
       _getCheckboxTooltip: function(item, textProperty, checkboxName) {
-        if (!item || !textProperty || !checkboxName) {
-          return;
-        }
-        return 'Toggle ' + checkboxName + ' on ' + item[textProperty];
+        return 'Toggle ' + (checkboxName ? (checkboxName + (item ? (' on ' + item[textProperty]) : '')) : '');
       },
 
       /**
@@ -443,10 +441,7 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
        * @private
        */
       _getProperty: function(item, property) {
-        if(!item || !property) {
-          return;
-        }
-        return item[property];
+        return item ? item[property] : undefined;
       },
 
       /**
