@@ -1,7 +1,7 @@
 {
   "name": "double-bar-chart",
   "description": "A Polymer Element showing a bar chart of double-bar elements with optional selectable behavior.",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "authors": [
     "Next Century Corporation"
   ],
@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.2",
-    "double-bar": "DigElements/double-bar#^2.1.0",
+    "double-bar": "DigElements/double-bar#^2.2.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#2.0.0"
   },
   "devDependencies": {

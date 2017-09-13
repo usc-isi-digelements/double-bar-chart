@@ -15,6 +15,23 @@ A Polymer Element showing a bar chart of double-bar elements with optional selec
 </double-bar-chart>
 ```
 
+### Styling
+
+`<double-bar-chart>` provides the following custom properties and mixins for styling:
+
+Custom property                              | Description                                               | Default
+---------------------------------------------|-----------------------------------------------------------|--------
+`--double-bar-chart-left-color`              | The color of the left bars.                               | --paper-grey-300
+`--double-bar-chart-left-count-color`        | The color of the left count labels.                       | --paper-grey-900
+`--double-bar-chart-left-height`             | The height of the left bars.                              | 20px
+`--double-bar-chart-left-title-color`        | The color of the left title labels.                       | --paper-grey-900
+`--double-bar-chart-left-title-hover-color`  | The color of the left title labels on hover (if a link).  | --paper-grey-600
+`--double-bar-chart-right-color`             | The color of the right bars.                              | --paper-grey-300
+`--double-bar-chart-right-count-color`       | The color of the right count labels.                      | --paper-grey-900
+`--double-bar-chart-right-height`            | The height of the right bars.                             | 20px
+`--double-bar-chart-right-title-color`       | The color of the right title labels.                      | --paper-grey-900
+`--double-bar-chart-right-title-hover-color` | The color of the right title labels on hover (if a link). | --paper-grey-600
+
 ### Dependencies
 
 Dependencies are installed using [Bower](http://bower.io/):
