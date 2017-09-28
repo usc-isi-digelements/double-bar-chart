@@ -89,6 +89,7 @@ Custom property                                  | Description                  
           query="[[query]]"
           count="[[_getProperty(object.item, countProperty)]]"
           icon="[[_getProperty(object.item, iconProperty)]]"
+          image="[[_getProperty(object.item, sourceProperty)]]"
           link="[[_getProperty(object.item, linkProperty)]]"
           max="[[_getProperty(object.item, maxProperty)]]"
           style-class="[[_getProperty(object.item, styleClassProperty)]]"
@@ -199,6 +200,19 @@ Custom property                                  | Description                  
         selectProperty: {
           type: String,
           value: 'select'
+        },
+
+        /**
+         * (Optional)
+         *
+         * The image source property in each item.
+         *
+         * @type {String}
+         * @default 'source'
+         */
+        sourceProperty: {
+          type: String,
+          value: 'source'
         },
 
         /**
