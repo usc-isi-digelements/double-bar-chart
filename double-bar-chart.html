@@ -78,7 +78,7 @@ Custom property                                  | Description                  
       }
     </style>
 
-    <template is="dom-repeat" items="[[_templateData]]" as="object" initial-count="10">
+    <template is="dom-repeat" items="[[_templateData]]" as="object">
       <div class="flex">
         <double-bar
           client="[[client]]"
@@ -90,6 +90,7 @@ Custom property                                  | Description                  
           count="[[_getProperty(object.item, countProperty)]]"
           icon="[[_getProperty(object.item, iconProperty)]]"
           image="[[_getProperty(object.item, sourceProperty)]]"
+          image-style-class="[[imageStyleClass]]"
           link="[[_getProperty(object.item, linkProperty)]]"
           max="[[_getProperty(object.item, maxProperty)]]"
           style-class="[[_getProperty(object.item, styleClassProperty)]]"
@@ -333,6 +334,19 @@ Custom property                                  | Description                  
         checkboxName: {
           type: String,
           value: 'Filter'
+        },
+
+        /**
+         * (Optional)
+         *
+         * The style class for all the images in the chart.
+         *
+         * @type {String}
+         * @default ''
+         */
+        imageStyleClass: {
+          type: String,
+          value: ''
         },
 
         /**
