@@ -1,7 +1,7 @@
 {
   "name": "double-bar-chart",
   "description": "A Polymer Element showing a bar chart of double-bar elements with optional selectable behavior.",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "authors": [
     "Next Century Corporation"
   ],

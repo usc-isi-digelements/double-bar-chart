@@ -316,8 +316,10 @@ limitations under the License.
           number: 1,
           string: 'string'
         };
-        expect(element._getCheckboxTooltip(item, 'number', 'foo')).to.equal('Toggle foo on 1');
-        expect(element._getCheckboxTooltip(item, 'string', 'bar')).to.equal('Toggle bar on string');
+        expect(element._getCheckboxTooltip(item, 'number', 'foo', false)).to.equal('Click to Add foo on 1');
+        expect(element._getCheckboxTooltip(item, 'number', 'foo', true)).to.equal('Click to Remove foo on 1');
+        expect(element._getCheckboxTooltip(item, 'string', 'bar', false)).to.equal('Click to Add bar on string');
+        expect(element._getCheckboxTooltip(item, 'string', 'bar', true)).to.equal('Click to Remove bar on string');
       });
 
       test('_getProperty does return correctly', function() {

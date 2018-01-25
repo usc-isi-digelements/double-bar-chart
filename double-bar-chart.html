@@ -97,7 +97,7 @@ Custom property                                  | Description                  
           text="[[_getProperty(object.item, textProperty)]]"
           target="[[target]]"
           show-checkbox="[[showCheckboxes]]"
-          checkbox-tooltip="[[_getCheckboxTooltip(object.item, textProperty, checkboxName)]]"
+          checkbox-tooltip="[[_getCheckboxTooltip(object.item, textProperty, checkboxName, object.selected)]]"
           toggle-listener="[[_createToggleListener(object)]]"
           max-other-count="{{maxOtherCount}}"
           selected="{{object.selected}}">
@@ -484,11 +484,12 @@ Custom property                                  | Description                  
        * @param {Object} item
        * @param {String} textProperty
        * @param {String} checkboxName
+       * @param {Boolean} selected
        * @return {String}
        * @private
        */
-      _getCheckboxTooltip: function(item, textProperty, checkboxName) {
-        return 'Toggle ' + (checkboxName ? (checkboxName + (item ? (' on ' + item[textProperty]) : '')) : '');
+      _getCheckboxTooltip: function(item, textProperty, checkboxName, selected) {
+        return 'Click to ' + (selected ? 'Remove ' : 'Add ') + checkboxName + ' on ' + item[textProperty];
       },
 
       /**
