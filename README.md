@@ -25,12 +25,12 @@ Custom property                                  | Description                  
 `--double-bar-chart-bar-left-count-color`        | The color of the left count labels.                       | --paper-grey-900
 `--double-bar-chart-bar-left-height`             | The height of the left bars.                              | 20px
 `--double-bar-chart-bar-left-title-color`        | The color of the left title labels.                       | --paper-grey-900
-`--double-bar-chart-bar-left-title-hover-color`  | The color of the left title labels on hover (if a link).  | --paper-grey-600
+`--double-bar-chart-bar-left-title-hover-color`  | The color of the left title labels on hover (if a link).  | --paper-indigo-900
 `--double-bar-chart-bar-right-color`             | The color of the right bars.                              | --paper-grey-300
 `--double-bar-chart-bar-right-count-color`       | The color of the right count labels.                      | --paper-grey-900
 `--double-bar-chart-bar-right-height`            | The height of the right bars.                             | 20px
 `--double-bar-chart-bar-right-title-color`       | The color of the right title labels.                      | --paper-grey-900
-`--double-bar-chart-bar-right-title-hover-color` | The color of the right title labels on hover (if a link). | --paper-grey-600
+`--double-bar-chart-bar-right-title-hover-color` | The color of the right title labels on hover (if a link). | --paper-indigo-900
 
 ### Dependencies
 
