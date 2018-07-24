@@ -1,24 +1,17 @@
 {
   "name": "double-bar-chart",
-  "description": "A Polymer Element showing a bar chart of double-bar elements with optional selectable behavior.",
-  "version": "2.6.3",
-  "authors": [
-    "Next Century Corporation"
-  ],
-  "keywords": [
-    "web-component",
-    "polymer"
-  ],
+  "description":
+    "A Polymer Element showing a bar chart of double-bar elements with optional selectable behavior.",
+  "version": "2.6.4",
+  "authors": ["Next Century Corporation"],
+  "keywords": ["web-component", "polymer"],
   "main": "double-bar-chart.html",
   "homepage": "https://github.com/usc-isi-digelements/double-bar-chart/",
-  "ignore": [
-    "/.*",
-    "/test/"
-  ],
+  "ignore": ["/.*", "/test/"],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.2",
-    "double-bar": "usc-isi-digelements/double-bar#2.6.2",
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#2.0.0",
+    "double-bar": "usc-isi-digelements/double-bar#^2.6.2",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "paper-styles": "PolymerElements/paper-styles#^2.0.0"
   },
   "devDependencies": {
